@@ -109,6 +109,8 @@ forwarder:
       containerPort: 9880
       protocol: TCP
 
+  plugins: []
+
   ## Service parameters
   ##
   service:
@@ -327,14 +329,17 @@ aggregator:
   ##
   replicaCount: 1
 
+  daemonUser: root
+  daemonGroup: root
+
   ## K8s Security Context for Aggregator pods
   ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ##
   securityContext:
     enabled: true
-    runAsUser: 1001
-    runAsGroup: 1001
-    fsGroup: 1001
+    runAsUser: 0
+    runAsGroup: 0
+    fsGroup: 0
 
   ## K8s Security Context for Aggregator containers
   ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
@@ -384,6 +389,8 @@ aggregator:
     - name: http
       containerPort: 9880
       protocol: TCP
+
+  plugins: []
 
   ## Service parameters
   ##

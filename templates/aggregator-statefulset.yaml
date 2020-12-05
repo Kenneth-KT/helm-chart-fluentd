@@ -58,11 +58,24 @@ spec:
         - name: fluentd
           image: {{ include "fluentd.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - echo > /dev/null &&
+            {{- if .Values.aggregator.plugins }}
+            {{- range .Values.aggregator.plugins }}
+              fluent-gem install {{ . }} &&
+            {{- end }}
+            {{- end }}
+              /opt/bitnami/scripts/fluentd/entrypoint.sh /opt/bitnami/scripts/fluentd/run.sh
           env:
             - name: FLUENTD_CONF
               value: {{ .Values.aggregator.configFile }}
             - name: FLUENTD_OPT
               value: {{ .Values.aggregator.extraArgs | quote }}
+            - name: FLUENTD_DAEMON_USER
+              value: {{ .Values.aggregator.daemonUser | quote }}
+            - name: FLUENTD_DAEMON_GROUP
+              value: {{ .Values.aggregator.daemonGroup | quote }}
             {{- if .Values.aggregator.extraEnv }}
             {{- toYaml .Values.aggregator.extraEnv | nindent 12 }}
             {{- end }}
