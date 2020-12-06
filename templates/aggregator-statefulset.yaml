@@ -63,7 +63,7 @@ spec:
             - echo > /dev/null &&
             {{- if .Values.aggregator.plugins }}
             {{- range .Values.aggregator.plugins }}
-              fluent-gem install {{ . }} &&
+              fluent-gem install {{ . }} --no-document &&
             {{- end }}
             {{- end }}
               /opt/bitnami/scripts/fluentd/entrypoint.sh /opt/bitnami/scripts/fluentd/run.sh
